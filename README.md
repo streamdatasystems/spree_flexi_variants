@@ -22,7 +22,7 @@ The branch 4-6-stable version for spree >=4.6.0
 ### See the notes in Versionfile if you are using an older version of spree
 
 
-`gem 'spree_flexi_variants', github: 'rahul2103/spree_flexi_variants', branch: '4-6-stable'`
+`gem 'spree_flexi_variants', github: 'streamdatasystems/spree_flexi_variants', branch: 'master'`
 
 `bundle install`
 
@@ -35,7 +35,7 @@ The branch 4-6-stable version for spree >=4.6.0
 When querying the Storefront Products API, the response includes an "Included" section with additional data related to the main product. This section provides details on various entities that complement the core product information.
 
 ```ruby
-{{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_option_types,product_customization_types,ad_hoc_variant_exclusions
+GET {{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_option_types,product_customization_types,ad_hoc_variant_exclusions
 ```
 
 ### Ad-hoc Option Type
@@ -43,7 +43,7 @@ When querying the Storefront Products API, the response includes an "Included" s
 Represents dynamic, user-defined product options that can significantly impact the pricing and customization of the product. Each ad-hoc option type may have multiple values, providing users with diverse choices for personalization.
 
 ```ruby
-{{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_option_types
+GET {{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_option_types
 ```
 
 - **price_modifier_type** (string|null): Specifies the type of price modifier applied to the product, such as a fixed amount or a percentage.
@@ -148,7 +148,7 @@ Represents dynamic, user-defined product options that can significantly impact t
 Describes customization options available for the product, enabling users to tailor specific aspects according to their preferences. Product customization types typically involve calculators that determine the pricing based on user selections.
 
 ```ruby
-{{baseUrl}}api/v2/storefront/products/:product_slug?include=product_customization_types
+GET {{baseUrl}}api/v2/storefront/products/:product_slug?include=product_customization_types
 ```
 
 - **calculator** (string): Identifies the calculation method for customization pricing, such as "Spree::Calculator::AmountTimesConstant."
@@ -200,37 +200,6 @@ Describes customization options available for the product, enabling users to tai
               }
           ]
       }
-  },
-  {
-      "id": "3",
-      "type": "product_customization_type",
-      "attributes": {
-          "calculator": "Spree::Calculator::ProductArea",
-          "customizable_product_options": [
-              {
-                  "id": 3,
-                  "product_customization_type_id": 3,
-                  "position": null,
-                  "presentation": "Width",
-                  "name": "width",
-                  "description": "Width",
-                  "created_at": "2024-02-02T10:29:47.547Z",
-                  "updated_at": "2024-02-02T10:38:00.769Z",
-                  "preferences": null
-              },
-              {
-                  "id": 4,
-                  "product_customization_type_id": 3,
-                  "position": null,
-                  "presentation": "Height",
-                  "name": "height",
-                  "description": "Height",
-                  "created_at": "2024-02-02T10:29:47.550Z",
-                  "updated_at": "2024-02-02T10:38:00.771Z",
-                  "preferences": null
-              }
-          ]
-      }
   }
 ```
 
@@ -239,7 +208,7 @@ Describes customization options available for the product, enabling users to tai
 Defines exclusions or restrictions on certain ad-hoc option values for specific product variants, ensuring compatibility and preventing conflicting customizations.
 
 ```ruby
-{{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_variant_exclusions
+GET {{baseUrl}}api/v2/storefront/products/:product_slug?include=ad_hoc_variant_exclusions
 ```
 
 - **excluded_ad_hoc_option_values** (array): An array specifying ad-hoc option values that are excluded from particular product variants. Each exclusion contains details:
@@ -290,6 +259,35 @@ Defines exclusions or restrictions on certain ad-hoc option values for specific 
       }
   }
 ```
+
+## Storefront Calculate API Documentation
+
+### Endpoint
+
+```ruby
+GET {{baseUrl}}/api/v2/storefront/calculate/:calculator/:value
+```
+
+### Parameters
+- **calculator** (string): The identifier for the calculator used in the calculation.
+- **value** (string): The value to be used in the calculation.
+
+### Response
+
+```json
+{
+    "result": "..."  // The result of the calculation based on the provided calculator and value.
+}
+```
+
+### Description
+
+This API endpoint allows you to perform calculations using a specified calculator and value. The result of the calculation is returned in the response.
+
+## Notes
+- Ensure the provided calculator is valid and supported by the API.
+- The value parameter should be appropriately formatted based on the requirements of the selected calculator.
+- Refer to the response's result field for the calculated result.
 
 ## Contributing
 
